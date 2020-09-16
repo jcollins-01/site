@@ -256,11 +256,11 @@ PLATFORMS
 
 DEPENDENCIES
   github-pages
-  jekyll-feed (~> 0.6)
-  minima (~> 2.0)
-  tzinfo (~> 1.2)
+  jekyll-feed
+  minima
+  tzinfo
   tzinfo-data
-  wdm (~> 0.1.0)
+  wdm
 
 BUNDLED WITH
    2.1.4
