@@ -20,4 +20,6 @@ async function init() {
     model = await loadModel();
 }
 
+//const xs = tf.tensor2d([[1], [2], [3], [4]], [4, 1]);
+
 init();
