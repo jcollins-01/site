@@ -21,5 +21,17 @@ async function init() {
 }
 
 //const xs = tf.tensor2d([[1], [2], [3], [4]], [4, 1]);
+//dictionary in js, where image is replaced by the array above
+//var signature = JSON.parse("signature.json") <-parses through the json file for outputs/inputs
+
+//  var fetches = [];
+//     for (var key in signature.outputs){
+//         fetches.push(key, signature.outpus[key];
+//     }
+
+//create a session in tensorflow.js -> assign to var session
+//session.run
+
+//for (var key : signature.output
 
 init();
