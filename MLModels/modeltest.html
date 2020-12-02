@@ -1,0 +1,57 @@
+<!Doctype html> 
+<html> 
+<head> 
+    <meta charset = "utf-8"> 
+    <script type = "text/javascript"
+        src = "https://cdn.jsdelivr.net/npm/brython@3.8.9/brython.min.js"> 
+    </script> 
+</head> 
+  
+<body onload = "brython()"> 
+<script type = "text/python"> 
+     def predict(self, image: Image.Image):
+        # load the model if we don't have a session
+        if self.session is None:
+            self.load()
+        # get the image width and height
+        width, height = image.size
+        # center crop image (you can substitute any other method to make a square image, such as just resizing or padding edges with 0)
+        if width != height:
+            square_size = min(width, height)
+            left = (width - square_size) / 2
+            top = (height - square_size) / 2
+            right = (width + square_size) / 2
+            bottom = (height + square_size) / 2
+            # Crop the center of the image
+            image = image.crop((left, top, right, bottom))
+        # now the image is square, resize it to be the right shape for the model input
+        if "Image" not in self.inputs:
+            raise ValueError("Couldn't find Image in model inputs - please report issue to Lobe!")
+        input_width, input_height = self.inputs["Image"]["shape"][1:3]
+        if image.width != input_width or image.height != input_height:
+            image = image.resize((input_width, input_height))
+        # make 0-1 float instead of 0-255 int (that PIL Image loads by default)
+        image = np.asarray(image) / 255.0
+        # create the feed dictionary that is the input to the model
+        # first, add our image to the dictionary (comes from our signature.json file)
+        feed_dict = {self.inputs["Image"]["name"]: [image]}
+
+        # list the outputs we want from the model -- these come from our signature.json file
+        # since we are using dictionaries that could have different orders, make tuples of (key, name) to keep track for putting
+        # the results back together in a dictionary
+        fetches = [(key, output["name"]) for key, output in self.outputs.items()]
+
+        # run the model! there will be as many outputs from session.run as you have in the fetches list
+        outputs = self.session.run(fetches=[name for _, name in fetches], feed_dict=feed_dict)
+        # do a bit of postprocessing
+        results = {}
+        # since we actually ran on a batch of size 1, index out the items from the returned numpy arrays
+        for i, (key, _) in enumerate(fetches):
+            val = outputs[i].tolist()[0]
+            if isinstance(val, bytes):
+                val = val.decode()
+            results[key] = val
+        return results
+</script> 
+</body> 
+</html>
