@@ -16,7 +16,7 @@ function startPredicting() {
             //const activation = mobilenet.predict(img); --Encodings for mobilenet
             const prediction = model.predict(inputData);
             //.as1D.argMax() finds the value with highest probability
-            return predictions.as1D().argMax();
+            return prediction.as1D().argMax();
         });
   const classId = (await predictedClass.data())[0];
         var predictionText = "";
