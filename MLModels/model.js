@@ -2,7 +2,7 @@ const webcam = new Webcam(document.getElementById("wc"));
 let model;
 
 async function loadModel(){ 
-              model = await tf.loadModel('web_model/model.json');
+              model = await tf.loadGraphModel('web_model/model.json');
               document.getElementById('out').innerHTML += model;
           }
 
