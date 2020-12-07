@@ -8,11 +8,23 @@ async function loadModel(){
 
 // Ensures that prediction is started once
 function startPredicting() {
-    const inputData = webcam.capture();
     //Need to create a predict() function for the model that will use the model's labels to classify the captured image
     //Maybe save the image captured by the webcam in a variable in order to do so
     //predict();
-    const prediction = model.predict(inputData);
+  const predictedClass = tf.tidy(() => {
+            const inputData = webcam.capture();
+            //const activation = mobilenet.predict(img); --Encodings for mobilenet
+            const prediction = model.predict(inputData);
+            //.as1D.argMax() finds the value with highest probability
+            return predictions.as1D().argMax();
+        });
+  const classId = (await predictedClass.data())[0];
+        var predictionText = "";
+        predictionText = "I see " + document.getElementById("num").value;
+        document.getElementById("prediction").innerText = predictionText;
+        // dispose clears the predictedClass variable
+        predictedClass.dispose();
+        await tf.nextFrame();
 }
 
 // Combines everything
