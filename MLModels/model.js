@@ -11,7 +11,7 @@ function startPredicting() {
     //Need to create a predict() function for the model that will use the model's labels to classify the captured image
     //Maybe save the image captured by the webcam in a variable in order to do so
     //predict();
- /* const predictedClass = tf.tidy(() => {
+  const predictedClass = tf.tidy(() => {
             const inputData = webcam.capture();
             //const activation = mobilenet.predict(img); --Encodings for mobilenet
             const prediction = model.predict(inputData);
@@ -24,7 +24,7 @@ function startPredicting() {
         document.getElementById("prediction").innerText = predictionText;
         // dispose clears the predictedClass variable
         predictedClass.dispose();
-        await tf.nextFrame();           */
+        await tf.nextFrame();           
 }
 
 // Combines everything
